@@ -1,6 +1,5 @@
 package com.smecking.bsrindicator;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -33,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         mCornerIndicaor.setViewPager(mViewPager);
         mIndicator.setViewPager(mViewPager);
         mRoundCornerIndicaor.setViewPager(mViewPager);
-        isLastPage();
+       // isLastPage();
     }
 
     public void isLastPage() {
@@ -74,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                         if(mViewPager.getCurrentItem() == mAdapter.getCount() - 1 && !flag) {
 
                             // overridePendingTransition(0, 0);
-                            startActivity(new Intent(MainActivity.this,HomeActivity.class));
+                           // startActivity(new Intent(MainActivity.this,HomeActivity.class));
                             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out
                             );
                             finish();
