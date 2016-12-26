@@ -35,5 +35,18 @@
             smecking:rci_gap="10dp"
             smecking:rci_height="10dp"
             smecking:rci_width="10dp"/>
+        <com.smecking.bsrindicator.indicator.RoundCornerIndicaor
+            android:id="@+id/indicator_round_rectangle_stroke"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            smecking:rci_cornerRadius="2dp"
+            smecking:rci_gap="10dp"
+            smecking:rci_height="10dp"
+            smecking:rci_selectColor="#ffffff"
+            smecking:rci_strokeColor="#ffffff"
+            smecking:rci_strokeWidth="1dp"
+            smecking:rci_unselectColor="#00000000"
+            smecking:rci_width="10dp"/>
     </LinearLayout>
 </FrameLayout>

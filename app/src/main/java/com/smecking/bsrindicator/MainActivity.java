@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private IndicatorAdapter mAdapter;
     private CircleIndicator mIndicator;
     private RoundCornerIndicaor mCornerIndicaor;
-
+    private RoundCornerIndicaor mRoundCornerIndicaor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,12 +26,13 @@ public class MainActivity extends AppCompatActivity {
         mViewPager= (ViewPager) findViewById(viewPager);
         mIndicator= (CircleIndicator) findViewById(R.id.indicator);
         mCornerIndicaor= (RoundCornerIndicaor) findViewById(R.id.indicator_square);
+        mRoundCornerIndicaor= (RoundCornerIndicaor) findViewById(R.id.indicator_round_rectangle_stroke);
         mAdapter=new IndicatorAdapter();
 
         mViewPager.setAdapter(mAdapter);
         mCornerIndicaor.setViewPager(mViewPager);
         mIndicator.setViewPager(mViewPager);
-
+        mRoundCornerIndicaor.setViewPager(mViewPager);
         isLastPage();
     }
 
