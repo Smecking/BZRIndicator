@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.smecking.bsrindicator.adapter.IndicatorAdapter;
-import com.smecking.bsrindicator.indicator.CircleIndicator;
 import com.smecking.bsrindicator.indicator.RoundCornerIndicaor;
 
 import static com.smecking.bsrindicator.R.id.viewPager;
@@ -15,7 +14,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
     private IndicatorAdapter mAdapter;
-    private CircleIndicator mIndicator;
     private RoundCornerIndicaor mCornerIndicaor;
     private RoundCornerIndicaor mRoundCornerIndicaor;
     @Override
@@ -23,14 +21,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mViewPager= (ViewPager) findViewById(viewPager);
-        mIndicator= (CircleIndicator) findViewById(R.id.indicator);
         mCornerIndicaor= (RoundCornerIndicaor) findViewById(R.id.indicator_square);
         mRoundCornerIndicaor= (RoundCornerIndicaor) findViewById(R.id.indicator_round_rectangle_stroke);
         mAdapter=new IndicatorAdapter();
 
         mViewPager.setAdapter(mAdapter);
         mCornerIndicaor.setViewPager(mViewPager);
-        mIndicator.setViewPager(mViewPager);
         mRoundCornerIndicaor.setViewPager(mViewPager);
        // isLastPage();
     }

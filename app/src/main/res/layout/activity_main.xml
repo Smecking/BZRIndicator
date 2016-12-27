@@ -18,15 +18,6 @@
         android:layout_gravity="bottom"
         android:layout_marginBottom="20dp">
 
-        <com.smecking.bsrindicator.indicator.CircleIndicator
-            android:id="@+id/indicator"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_gravity="bottom"
-            smecking:ci_width="6dp"
-            smecking:ci_height="6dp"
-            />
-
         <com.smecking.bsrindicator.indicator.RoundCornerIndicaor
             android:id="@+id/indicator_square"
             android:layout_width="match_parent"
@@ -47,6 +38,7 @@
             smecking:rci_strokeColor="#ffffff"
             smecking:rci_strokeWidth="1dp"
             smecking:rci_unselectColor="#00000000"
-            smecking:rci_width="10dp"/>
+            smecking:rci_width="10dp"
+            smecking:rci_isSnap="false"/>
     </LinearLayout>
 </FrameLayout>

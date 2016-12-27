@@ -6,8 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
@@ -30,11 +28,14 @@ public class RoundCornerIndicaor extends View implements PageIndicator {
     private int indicatorWidth;
     private int indicatorHeight;
     private int indicatorGap;
+    //弧度
     private int cornerRadius;
     private int selectColor;
     private int unselectColor;
     private int strokeWidth;
+    //圆环颜色
     private int strokeColor;
+    //false平滑移动
     private boolean isSnap;
 
     public RoundCornerIndicaor(Context context) {
@@ -234,24 +235,6 @@ public class RoundCornerIndicaor extends View implements PageIndicator {
         }
 
         return result;
-    }
-
-    @Override
-    protected Parcelable onSaveInstanceState() {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("instanceState", super.onSaveInstanceState());
-        bundle.putInt("currentItem", currentItem);
-        return bundle;
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Parcelable state) {
-        if (state instanceof Bundle) {
-            Bundle bundle = (Bundle) state;
-            currentItem = bundle.getInt("currentItem");
-            state = bundle.getParcelable("instanceState");
-        }
-        super.onRestoreInstanceState(state);
     }
 
     protected int dp2px(float dp) {
