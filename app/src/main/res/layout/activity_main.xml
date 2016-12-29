@@ -16,7 +16,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="20dp"
+        android:layout_margin="10dp">
 
         <com.smecking.bsrindicator.indicator.RoundCornerIndicaor
             android:id="@+id/indicator_square"
@@ -41,9 +42,10 @@
             smecking:rci_width="10dp"
             smecking:rci_isSnap="false"/>
         <com.smecking.bsrindicator.indicator.SkgBsrIndicator
+            android:id="@+id/skgindicator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="15dp"
-            smecking:bsr_radius="5dp"/>
+            />
     </LinearLayout>
 </FrameLayout>

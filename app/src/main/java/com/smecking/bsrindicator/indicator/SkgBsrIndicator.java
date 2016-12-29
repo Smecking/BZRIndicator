@@ -4,37 +4,42 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Rect;
-import android.graphics.drawable.GradientDrawable;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Pair;
 import android.view.View;
 
 import com.smecking.bsrindicator.R;
+import com.smecking.bsrindicator.utils.DensityUtils;
 
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
  * Created by Smecking on 2016/12/26.
  */
 
-public class SkgBsrIndicator extends View implements PageIndicator {
+public class SkgBsrIndicator extends View implements ViewPager.OnPageChangeListener {
 
-    private Context context;
-    private ViewPager vp;
-    private List<GradientDrawable> unselectDrawables = new ArrayList<>();
-    private List<Rect> unselectRects = new ArrayList<>();
-    private GradientDrawable selectDrawable = new GradientDrawable();
-    private Rect selectRect = new Rect();
+    //Slide
+    private int frameXCoordinate;
+    private int frameColor;
+    private int frameColorReverse;
+
+    private int selectedPosition;
+    private int selectingPosition;
+    private int lastSelectedPosition;
+
+    private int radiusPx = DensityUtils.dpToPx(6);
+    private int paddingPx = DensityUtils.dpToPx(8);
+    private int unselectedColor = Color.parseColor("#33ffffff");
+    private int selectedColor = Color.parseColor("#ffffff");
+
+
+    private Paint paint = new Paint();
+    private RectF rect = new RectF();
     private int count;
-    private int currentItem;
-    private float positionOffset;
-
-    private int bsr_radius;
-    private int bsr_color;
-    private int indicatorGap;
 
     public SkgBsrIndicator(Context context) {
         super(context);
@@ -54,162 +59,263 @@ public class SkgBsrIndicator extends View implements PageIndicator {
 
 
     private void init(Context context, AttributeSet attrs) {
-        this.context = context;
-        indicatorGap = dp2px(12);
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SkgBsrIndicator);
-        bsr_radius = typedArray.getDimensionPixelSize(R.styleable.SkgBsrIndicator_bsr_radius, dp2px(6));
-        bsr_color = typedArray.getColor(R.styleable.SkgBsrIndicator_bsr_color, Color.parseColor("#ffffff"));
+        initAttributes(context,attrs);
+        initFrameValues();
+        initAnimation();
+
+        paint.setStyle(Paint.Style.FILL);
+        paint.setAntiAlias(true);
     }
 
+    private void initAnimation() {
+
+    }
+
+    private void initFrameValues() {
+        //color
+        frameColor = selectedColor;
+        frameColorReverse = unselectedColor;
+        //slide
+        int xCoordinate = getXCoordinate(selectedPosition);
+        frameXCoordinate = xCoordinate;
+
+    }
+
+    private int getXCoordinate(int position) {
+        int actualViewWidth = calculateActualViewWidth();
+        int x = (getWidth() - actualViewWidth) / 2;
+
+        if (x < 0) {
+            x = 0;
+        }
+
+        for (int i = 0; i < count; i++) {
+            x += radiusPx;
+            if (position == i) {
+                return x;
+            }
+
+            x += radiusPx + paddingPx;
+        }
+
+        return x;
+    }
+
+    private int calculateActualViewWidth() {
+        int width = 0;
+        int diameter = radiusPx * 2;
+
+        for (int i = 0; i < count; i++) {
+            width += diameter;
+
+            if (i < count - 1) {
+                width += paddingPx;
+            }
+        }
+
+        return width;
+    }
+
+    private void initAttributes(Context context, AttributeSet attrs) {
+        if (attrs==null){
+            return;
+        }
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SkgBsrIndicator);
+        count = typedArray.getInt(R.styleable.SkgBsrIndicator_count, 4);
+        int position = typedArray.getInt(R.styleable.SkgBsrIndicator_select, 0);
+
+        if (position < 0) {
+            position = 0;
+        } else if (count > 0 && position > count - 1) {
+            position = count - 1;
+        }
+
+        selectedPosition = position;
+        selectingPosition = position;
+
+        paddingPx = (int) typedArray.getDimension(R.styleable.SkgBsrIndicator_padding, paddingPx);
+        radiusPx = (int) typedArray.getDimension(R.styleable.SkgBsrIndicator_radius, radiusPx);
+
+        unselectedColor = typedArray.getColor(R.styleable.SkgBsrIndicator_unselectedColor, unselectedColor);
+        selectedColor = typedArray.getColor(R.styleable.SkgBsrIndicator_selectedColor, selectedColor);
+        typedArray.recycle();
+    }
 
     @Override
-    public void setViewPager(ViewPager vp) {
-        if (isValid(vp)) {
-            this.vp = vp;
-            this.count = vp.getAdapter().getCount();
-            vp.removeOnPageChangeListener(this);
-            vp.addOnPageChangeListener(this);
-            unselectDrawables.clear();
-            unselectRects.clear();
-            for (int i = 0; i <= count; i++) {
-                unselectDrawables.add(new GradientDrawable());
-                unselectRects.add(new Rect());
-            }
-            invalidate();
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+
+        int circleDiameterPx = radiusPx * 2;
+        int desiredHeight = circleDiameterPx;
+        int desiredWidth = 0;
+
+        if (count != 0) {
+            desiredWidth = (circleDiameterPx * count) + (paddingPx * (count - 1));
+        }
+
+        int width;
+        int height;
+
+        if (widthMode == MeasureSpec.EXACTLY) {
+            width = widthSize;
+        } else if (widthMode == MeasureSpec.AT_MOST) {
+            width = Math.min(desiredWidth, widthSize);
+        } else {
+            width = desiredWidth;
+        }
+
+        if (heightMode == MeasureSpec.EXACTLY) {
+            height = heightSize;
+        } else if (heightMode == MeasureSpec.AT_MOST) {
+            height = Math.min(desiredHeight, heightSize);
+        } else {
+            height = desiredHeight;
+        }
+
+        if (width < 0) {
+            width = 0;
+        }
+
+        if (height < 0) {
+            height = 0;
+        }
+
+        setMeasuredDimension(width, height);
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        int y = getHeight() / 2;
+
+        for (int i = 0; i < count; i++) {
+            int x = getXCoordinate(i);
+            drawCircle(canvas, i, x, y);
+        }
+    }
+
+    private void drawCircle(Canvas canvas, int position, int x, int y) {
+        boolean selectedItem = position == selectedPosition || position == lastSelectedPosition;
+        boolean selectingItem = position == selectingPosition || position == selectedPosition;
+        boolean isSelectedItem = selectedItem | selectingItem;
+
+        if (isSelectedItem) {
+            drawWithAnimationEffect(canvas, position, x, y);
+        } else {
+            drawWithNoEffect(canvas, position, x, y);
+        }
+    }
+
+    private void drawWithNoEffect(Canvas canvas, int position, int x, int y) {
+        int radius = radiusPx;
+        int color = unselectedColor;
+
+        if (position == selectedPosition) {
+            color = selectedColor;
+        }
+
+        paint.setColor(color);
+        canvas.drawCircle(x, y, radius, paint);
+    }
+
+    private void drawWithAnimationEffect(Canvas canvas, int position, int x, int y) {
+        paint.setColor(unselectedColor);
+        canvas.drawCircle(x, y, radiusPx, paint);
+
+        if (position == selectingPosition || position == selectedPosition) {
+            paint.setColor(selectedColor);
+            canvas.drawCircle(frameXCoordinate, y, radiusPx, paint);
+
+        } else if (position == selectedPosition || position == lastSelectedPosition) {
+            paint.setColor(selectedColor);
+            canvas.drawCircle(frameXCoordinate, y, radiusPx, paint);
+        }
+    }
+
+    public void setViewPager(ViewPager viewpager){
+        if (viewpager!=null){
+            count=viewpager.getAdapter().getCount();
+            viewpager.addOnPageChangeListener(this);
         }
     }
 
     @Override
-    public void setViewPager(ViewPager vp, int realCount) {
-
-    }
-
-    @Override
-    public void setCurrentItem(int item) {
-
-    }
-
-    @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        /**
-         * position:当前View的位置
-         * positionOffset:当前View的偏移量比例.[0,1)
-         */
-        this.currentItem = position;
-        this.positionOffset = positionOffset;
-        invalidate();
+       /* Pair<Integer, Float> progressPair = getProgress(position, positionOffset);
+        int selectingPosition = progressPair.first;
+        float selectingProgress = progressPair.second;
+
+        if (selectingProgress == 1) {
+            lastSelectedPosition = selectedPosition;
+            selectedPosition = selectingPosition;
+        }
+
+        setProgress(selectingPosition, selectingProgress);
+    }
+
+    private void setProgress(int selectingPosition, float progress) {
+        if (selectingPosition < 0) {
+            selectingPosition = 0;
+
+        } else if (selectingPosition > count - 1) {
+            selectingPosition = count - 1;
+        }
+
+        if (progress < 0) {
+            progress = 0;
+
+        } else if (progress > 1) {
+            progress = 1;
+        }
+
+        this.selectingPosition = selectingPosition;
+        AbsAnimation animator = getSelectedAnimation();
+
+        if (animator != null) {
+            animator.progress(progress);
+        }*/
+    }
+
+    private Pair<Integer,Float> getProgress(int position, float positionOffset) {
+        boolean isRightOverScrolled = position > selectedPosition;
+        boolean isLeftOverScrolled = position + 1 < selectedPosition;
+
+        if (isRightOverScrolled || isLeftOverScrolled) {
+            selectedPosition = position;
+        }
+
+        boolean isSlideToRightSide = selectedPosition == position && positionOffset != 0;
+        int selectingPosition;
+        float selectingProgress;
+
+        if (isSlideToRightSide) {
+            selectingPosition = position + 1;
+            selectingProgress = positionOffset;
+
+        } else {
+            selectingPosition = position;
+            selectingProgress = 1 - positionOffset;
+        }
+
+        if (selectingProgress > 1) {
+            selectingProgress = 1;
+
+        } else if (selectingProgress < 0) {
+            selectingProgress = 0;
+        }
+
+        return new Pair<>(selectingPosition, selectingProgress);
     }
 
     @Override
     public void onPageSelected(int position) {
-        currentItem = position;
-        invalidate();
+
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
 
-    }
-
-    private boolean isValid(ViewPager vp) {
-        if (vp == null) {
-            throw new IllegalStateException("ViewPager can not be NULL!");
-        }
-
-        if (vp.getAdapter() == null) {
-            throw new IllegalStateException("ViewPager adapter can not be NULL!");
-        }
-
-        return true;
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(measureWidth(widthMeasureSpec), measureHeight(heightMeasureSpec));
-    }
-
-    private int measureHeight(int heightMeasureSpec) {
-        int result;
-        int specMode = MeasureSpec.getMode(heightMeasureSpec);
-        int specSize = MeasureSpec.getSize(heightMeasureSpec);
-        if (specMode == MeasureSpec.EXACTLY) {//大小确定,直接使用
-            result = specSize;
-        } else {
-            int padding = getPaddingTop() + getPaddingBottom();
-            result = padding + bsr_radius * 2;
-            //如果父视图的测量要求为AT_MOST,即限定了一个最大值,则再从系统建议值和自己计算值中去一个较小值
-            if (specMode == MeasureSpec.AT_MOST) {
-                result = Math.min(result, specSize);
-            }
-        }
-
-        return result;
-    }
-
-    private int measureWidth(int widthMeasureSpec) {
-        int result = 0;
-        int specMode = MeasureSpec.getMode(widthMeasureSpec);
-        int specSize = MeasureSpec.getSize(widthMeasureSpec);
-        if (specMode == MeasureSpec.EXACTLY || count == 0) {//大小确定,直接使用
-            result = specSize;
-        } else {
-            int padding = getPaddingLeft() + getPaddingRight();
-            result = padding + bsr_radius * 2 * count + indicatorGap * (count - 1);
-        }
-        //如果父视图的测量要求为AT_MOST,即限定了一个最大值,则再从系统建议值和自己计算值中去一个较小值
-        if (specMode == MeasureSpec.AT_MOST) {
-            result = Math.min(result, specSize);
-        }
-        return result;
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        if (count <= 0)
-            return;
-
-        int verticalOffset = getPaddingTop() + (getHeight() - getPaddingTop() - getPaddingBottom()) / 2 - bsr_radius;
-        int indicatorLayoutWidth = bsr_radius * 2 * count + indicatorGap * (count - 1);
-        int horizontalOffset = getPaddingLeft() + (getWidth() - getPaddingLeft() - getPaddingRight()) / 2 - indicatorLayoutWidth / 2;
-
-        drawUnselect(canvas, count, verticalOffset, horizontalOffset);
-        drawSelect(canvas, verticalOffset, horizontalOffset);
-    }
-
-    private void drawSelect(Canvas canvas, int verticalOffset, int horizontalOffset) {
-        int delta = (int) ((indicatorGap + bsr_radius * 2) * positionOffset);
-
-        selectRect.left = horizontalOffset + (bsr_radius * 2 + indicatorGap) * currentItem + delta;
-        selectRect.top = verticalOffset;
-        selectRect.right = selectRect.left + bsr_radius * 2;
-        selectRect.bottom = selectRect.top + bsr_radius * 2;
-
-        selectDrawable.setColor(bsr_color);
-        selectDrawable.setStroke(dp2px(5), bsr_color);
-        selectDrawable.setBounds(selectRect);
-        selectDrawable.draw(canvas);
-    }
-
-    private void drawUnselect(Canvas canvas, int count, int verticalOffset, int horizontalOffset) {
-        for (int i = 0; i < count; i++) {
-            Rect rect = unselectRects.get(i);
-            rect.left = horizontalOffset + (bsr_radius * 2 + indicatorGap) * i;
-            rect.top = verticalOffset;
-            rect.right = rect.left + bsr_radius * 2;
-            rect.bottom = rect.top + bsr_radius * 2;
-
-            GradientDrawable unselectDrawable = unselectDrawables.get(i);
-            unselectDrawable.setCornerRadius(dp2px(8));
-            unselectDrawable.setColor(bsr_color);
-            unselectDrawable.setStroke(dp2px(1), bsr_color);
-            unselectDrawable.setBounds(rect);
-            unselectDrawable.draw(canvas);
-        }
-    }
-
-    protected int dp2px(float dp) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dp * scale + 0.5f);
     }
 }
