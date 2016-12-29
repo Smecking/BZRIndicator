@@ -31,14 +31,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="15dp"
-            smecking:rci_cornerRadius="2dp"
+            smecking:rci_cornerRadius="5dp"
             smecking:rci_gap="10dp"
             smecking:rci_height="10dp"
             smecking:rci_selectColor="#ffffff"
             smecking:rci_strokeColor="#ffffff"
-            smecking:rci_strokeWidth="1dp"
+            smecking:rci_strokeWidth="5dp"
             smecking:rci_unselectColor="#00000000"
             smecking:rci_width="10dp"
             smecking:rci_isSnap="false"/>
+        <com.smecking.bsrindicator.indicator.SkgBsrIndicator
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            smecking:bsr_radius="5dp"/>
     </LinearLayout>
 </FrameLayout>

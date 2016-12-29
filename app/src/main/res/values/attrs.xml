@@ -20,4 +20,9 @@
         <!-- Whether or not the selected indicator snaps to the indicators. -->
         <attr name="rci_isSnap" format="boolean"/>
     </declare-styleable>
+    
+    <declare-styleable name="SkgBsrIndicator">
+        <attr name="bsr_radius" format="dimension"/>
+        <attr name="bsr_color" format="color"/>
+    </declare-styleable>
 </resources>

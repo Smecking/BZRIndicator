@@ -14,7 +14,6 @@ import com.smecking.bsrindicator.R;
 
 import java.util.ArrayList;
 
-/** A pratice demo use GradientDrawable to realize the effect of JakeWharton's CirclePageIndicator */
 public class RoundCornerIndicaor extends View implements PageIndicator {
     private Context context;
     private ViewPager vp;
