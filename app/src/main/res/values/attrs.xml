@@ -7,7 +7,6 @@
 
         <attr name="radius" format="dimension" />
         <attr name="padding" format="dimension" />
-
         <attr name="unselectedColor" format="color" />
         <attr name="selectedColor" format="color" />
 
