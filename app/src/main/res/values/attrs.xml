@@ -1,26 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="RoundCornerIndicaor">
-        <!-- width of indicators -->
-        <attr name="rci_width" format="dimension"/>
-        <!-- height of indicators -->
-        <attr name="rci_height" format="dimension"/>
-        <!-- the spacing between the indicator. -->
-        <attr name="rci_gap" format="dimension"/>
-        <!-- cornerRadius of the indicator. -->
-        <attr name="rci_cornerRadius" format="dimension"/>
-        <!-- width of the stroke used to draw the indicators. -->
-        <attr name="rci_strokeWidth" format="dimension"/>
-        <!-- color of the indicator that represents the current page. -->
-        <attr name="rci_selectColor" format="color"/>
-        <!-- color of the indicator that represents pages. -->
-        <attr name="rci_unselectColor" format="color"/>
-        <!-- color of the stroke used to draw the indicators. -->
-        <attr name="rci_strokeColor" format="color"/>
-        <!-- Whether or not the selected indicator snaps to the indicators. -->
-        <attr name="rci_isSnap" format="boolean"/>
-    </declare-styleable>
-    
+
     <declare-styleable name="SkgBsrIndicator">
         <attr name="count" format="integer" />
         <attr name="select" format="integer" />
@@ -32,5 +12,15 @@
         <attr name="selectedColor" format="color" />
 
         />
+    </declare-styleable>
+    <declare-styleable name="PageIndicator">
+
+        <attr name="pi_count" format="integer" />
+        <attr name="pi_out_radius" format="dimension" />
+        <attr name="pi_radius" format="dimension" />
+        <attr name="pi_un_focus_color" format="color"/>
+        <attr name="pi_focus_color" format="color"/>
+        <attr name="pi_padding" format="dimension"/>
+
     </declare-styleable>
 </resources>
