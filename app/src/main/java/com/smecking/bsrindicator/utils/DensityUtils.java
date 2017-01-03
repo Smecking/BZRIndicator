@@ -5,7 +5,7 @@ import android.util.TypedValue;
 
 public class DensityUtils {
 
-    public static int dpToPx(int dp) {
+    public static int dpToPx(float dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, Resources.getSystem().getDisplayMetrics());
     }
 

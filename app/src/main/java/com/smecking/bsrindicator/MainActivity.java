@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.smecking.bsrindicator.adapter.IndicatorAdapter;
 import com.smecking.bsrindicator.indicator.FPageIndicator;
+import com.smecking.bsrindicator.indicator.SkgBzrIndicator;
 
 import static com.smecking.bsrindicator.R.id.viewPager;
 
@@ -15,16 +16,20 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private IndicatorAdapter mAdapter;
     private FPageIndicator mPageIndicator;
+    private SkgBzrIndicator mSkgBzrIndicator;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mViewPager= (ViewPager) findViewById(viewPager);
         mPageIndicator= (FPageIndicator) findViewById(R.id.indicator);
+        mSkgBzrIndicator= (SkgBzrIndicator) findViewById(R.id.skg_indicator);
         mAdapter=new IndicatorAdapter();
 
         mViewPager.setAdapter(mAdapter);
         mPageIndicator.attachToViewPager(mViewPager);
+        mSkgBzrIndicator.setViewpager(mViewPager);
+
        // isLastPage();
     }
 
