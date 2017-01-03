@@ -2,13 +2,11 @@
 <resources>
 
     <declare-styleable name="SkgBsrIndicator">
-        <attr name="count" format="integer" />
-        <attr name="select" format="integer" />
-
-        <attr name="radius" format="dimension" />
-        <attr name="padding" format="dimension" />
-        <attr name="unselectedColor" format="color" />
-        <attr name="selectedColor" format="color" />
+        <attr name="skg_out_radius" format="dimension"/>
+        <attr name="skg_radius" format="dimension"/>
+        <attr name="skg_unfocus_color" format="color"/>
+        <attr name="skg_focus_color" format="color"/>
+        <attr name="skg_padding" format="dimension"/>
 
         />
     </declare-styleable>
