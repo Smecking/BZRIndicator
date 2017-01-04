@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:smecking="http://schemas.android.com/apk/res-auto"
+    xmlns:skg="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
@@ -14,18 +14,21 @@
         <com.smecking.bsrindicator.indicator.FPageIndicator
             android:id="@+id/indicator"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_alignParentBottom="true"
+            android:layout_height="30dp"
+
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="140dp"
-            smecking:pi_padding="15dp"
-            smecking:pi_out_radius = "8dp"
-            smecking:pi_radius = "6dp"
+            skg:pi_padding="15dp"
+            skg:pi_out_radius = "10dp"
+            skg:pi_radius = "6dp"
             />
+
     <com.smecking.bsrindicator.indicator.SkgBzrIndicator
         android:id="@+id/skg_indicator"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        smecking:skg_padding="10dp"
-        android:layout_below="@id/indicator"/>
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        skg:skg_color="#aa22cc"
+        skg:skg_padding="40dp"
+        />
 </RelativeLayout>

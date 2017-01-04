@@ -51,7 +51,7 @@ public class FPageIndicator extends View {
 
     @Override
     public void onPageSelected(int position) {
-      setSelectedPos(position);
+     // setSelectedPos(position);
     }
 
     @Override
@@ -102,13 +102,16 @@ public class FPageIndicator extends View {
   private void initPaint() {
     innerUnFocusPaint.setStyle(Paint.Style.FILL);
     innerUnFocusPaint.setColor(unFocusColor);
+    innerUnFocusPaint.setAntiAlias(true);
 
     innerFocusPaint.setStyle(Paint.Style.FILL);
     innerFocusPaint.setColor(focusColor);
+    innerFocusPaint.setAntiAlias(true);
 
     outPaint.setStyle(Paint.Style.STROKE);
     outPaint.setColor(focusColor);
     outPaint.setStrokeWidth(2F);
+    outPaint.setAntiAlias(true);
   }
 
   @Override
@@ -162,7 +165,6 @@ public class FPageIndicator extends View {
     super.onDraw(canvas);
 
     int height = getHeight();
-
     for (int i = 0; i < count; i++) {
       canvas.drawCircle(
           outRadius - innerRadius + padding * i + innerRadius * (1 + 2 * i),

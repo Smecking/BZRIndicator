@@ -3,9 +3,8 @@
 
     <declare-styleable name="SkgBzrIndicator">
         <attr name="skg_out_radius" format="dimension"/>
-        <attr name="skg_radius1" format="dimension"/>
-        <attr name="skg_radius2" format="dimension"/>
-        <attr name="skg_focus_color" format="color"/>
+        <attr name="skg_radius" format="dimension"/>
+        <attr name="skg_color" format="color"/>
         <attr name="skg_padding" format="dimension"/>
 
         />
