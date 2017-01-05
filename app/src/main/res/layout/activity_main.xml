@@ -11,24 +11,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-        <com.smecking.bsrindicator.indicator.FPageIndicator
-            android:id="@+id/indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
+    <com.smecking.bsrindicator.indicator.FPageIndicator
+        android:id="@+id/indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
 
-            android:layout_centerHorizontal="true"
-            skg:pi_padding="15dp"
-            skg:pi_out_radius = "10dp"
-            skg:pi_radius = "6dp"
-            />
+        android:layout_centerHorizontal="true"
+        skg:pi_out_radius="10dp"
+        skg:pi_padding="15dp"
+        skg:pi_radius="6dp"
+        />
 
     <com.smecking.bsrindicator.indicator.SkgBzrIndicator
         android:id="@+id/skg_indicator"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        skg:skg_color="#aa22cc"
-        skg:skg_padding="40dp"
+        android:layout_centerHorizontal="true"
+        android:padding="2dp"
+        skg:skg_color="#ec3f0b"
+        skg:skg_out_radius="5dp"
+        skg:skg_radius="7dp"
+        skg:skg_padding="3dp"
         />
 </RelativeLayout>

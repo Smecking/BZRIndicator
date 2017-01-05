@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         mViewPager.setAdapter(mAdapter);
         mPageIndicator.attachToViewPager(mViewPager);
-       // mSkgBzrIndicator.setViewpager(mViewPager);
+        mSkgBzrIndicator.setViewPager(mViewPager);
 
        // isLastPage();
     }
