@@ -29,7 +29,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:padding="2dp"
-        skg:skg_color="#ec3f0b"
+        skg:skg_color="#fffefe"
         skg:skg_out_radius="5dp"
         skg:skg_radius="7dp"
         skg:skg_padding="3dp"
