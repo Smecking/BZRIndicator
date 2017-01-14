@@ -142,26 +142,32 @@ public class SkgBzrIndicator extends View implements ViewPager.OnPageChangeListe
         for (int i = 0; i < count; i++) {
             canvas.drawCircle(radius * i * 2 + radius + padding * i, height / 2, outRadius, mPaint);
         }
-        mPath.moveTo((radius * 2 + padding) * drawPosition + radius, (height - radius * 2 * (1 - drawPositionOffset)) / 2);
+       // mPath.moveTo((radius * 2 + padding) * drawPosition + radius, (height - radius * 2 * (1 - drawPositionOffset)) / 2);
 
         if (currentPosition>drawPosition&drawPositionOffset!=0){
             //绘制圆1点一
-            canvas.drawCircle((radius * 2 + padding) * currentPosition + radius, (height - radius * 2 * (1 - drawPositionOffset)) / 2, 3, paint);
+            canvas.drawCircle((radius * 2 + padding) * currentPosition + radius, (height - radius * 2 * drawPositionOffset) / 2, 3, paint);
             //绘制圆1点二
-            canvas.drawCircle((radius * 2 + padding) * currentPosition + radius, (height - radius * 2 * (1 - drawPositionOffset)) / 2 + radius * 2 * (1 - drawPositionOffset), 3, paint);
+            canvas.drawCircle((radius * 2 + padding) * currentPosition + radius, (height - radius * 2 * drawPositionOffset) / 2 + radius * 2 *  drawPositionOffset, 3, paint);
         }else {
             //绘制圆1点一
             canvas.drawCircle((radius * 2 + padding) * drawPosition + radius, (height - radius * 2 * (1 - drawPositionOffset)) / 2, 3, paint);
             //绘制圆1点二
             canvas.drawCircle((radius * 2 + padding) * drawPosition + radius, (height - radius * 2 * (1 - drawPositionOffset)) / 2 + radius * 2 * (1 - drawPositionOffset), 3, paint);
         }
-//        if (drawPosition<=count-1) {
-//            canvas.drawCircle((radius * 2 + padding / 2) * (drawPosition + 1) + padding * drawPosition / 2, height / 2, 3, paint);
-//        }
-        //绘制圆2点1
-        canvas.drawCircle((radius * 2 * drawPosition + radius + padding * drawPosition) + (radius * 2 + padding) * drawPositionOffset, (height - radius * 2 * drawPositionOffset) / 2, 3, paint1);
-        //绘制圆2点2
-        canvas.drawCircle((radius * 2 * drawPosition + radius + padding * drawPosition) + (radius * 2 + padding) * drawPositionOffset, radius * 2 * drawPositionOffset + (height - radius * 2 * drawPositionOffset) / 2, 3, paint1);
+
+        if(currentPosition>drawPosition&drawPositionOffset!=0){
+            //绘制圆2点1
+            canvas.drawCircle((radius * 2 * drawPosition + radius + padding * drawPosition) + (radius * 2 + padding) * drawPositionOffset, (height - radius * 2 *(1-drawPositionOffset)) / 2, 3, paint1);
+            //绘制圆2点2
+            canvas.drawCircle((radius * 2 * drawPosition + radius + padding * drawPosition) + (radius * 2 + padding) * drawPositionOffset, radius * 2 *(1- drawPositionOffset) + (height - radius * 2 *(1-drawPositionOffset)) / 2, 3, paint1);
+        }else {
+            //绘制圆2点1            canvas.drawCircle((radius * 2 * drawPosition + radius + padding * drawPosition) + (radius * 2 + padding) * drawPositionOffset, (height - radius * 2 *drawPositionOffset) / 2, 3, paint1);
+
+            canvas.drawCircle((radius * 2 * drawPosition + radius + padding * drawPosition) + (radius * 2 + padding) * drawPositionOffset, (height - radius * 2 *drawPositionOffset) / 2, 3, paint1);
+            //绘制圆2点2
+            canvas.drawCircle((radius * 2 * drawPosition + radius + padding * drawPosition) + (radius * 2 + padding) * drawPositionOffset, radius * 2 * drawPositionOffset + (height - radius * 2 * drawPositionOffset) / 2, 3, paint1);
+        }
         if (currentPosition>drawPosition&drawPositionOffset!=0){
             //绘制控制点
             canvas.drawCircle((radius * 2 + padding) * currentPosition+(radius *drawPositionOffset), height / 2, 3, paint);
@@ -170,11 +176,13 @@ public class SkgBzrIndicator extends View implements ViewPager.OnPageChangeListe
             canvas.drawCircle((radius + radius * drawPositionOffset) + (radius * 2 + padding) * drawPosition, height / 2, 3, paint);
         }
         if (currentPosition>drawPosition&drawPositionOffset!=0){
-            canvas.drawCircle(circle1Xz, height / 2, radius * (1 - drawPositionOffset), bzrPaint2);
+            canvas.drawCircle(circle1Xz, height / 2, radius * (drawPositionOffset), bzrPaint2);
+            canvas.drawCircle(circle2X, height / 2, radius * (1-drawPositionOffset), bzrPaint);
         }else {
             canvas.drawCircle(circle1X, height / 2, radius * (1 - drawPositionOffset), bzrPaint2);
+            canvas.drawCircle(circle2X, height / 2, radius * drawPositionOffset, bzrPaint);
         }
-        canvas.drawCircle(circle2X, height / 2, radius * drawPositionOffset, bzrPaint);
+
     }
 
     public void setViewPager(ViewPager vp) {
